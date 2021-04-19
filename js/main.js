@@ -9,4 +9,5 @@ function setup() {
 
 function draw() {
   background(204);
+  chessBoard.renderBoard();
 }
