@@ -7,7 +7,7 @@ class ChessBoard {
     this.squares = [];
     for (let i = 0; i < this.width; i++) {
       for (let j = 0; j < this.height; j++) {
-        let pos = createVector(i, j);
+        let pos = createVector(j, i);
         this.squares.push(new Square(pos, this.size));
       }
     }
