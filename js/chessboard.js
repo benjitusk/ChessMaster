@@ -162,6 +162,26 @@ class ChessBoard {
         for (let square of this.squares) {
           square.highlight = false;
         }
+      } else if (clickedSquare.highlight && clickedSquare.piece.team != currentMove) {
+        // ATTACK!
+        // Kill the opponent
+        let opponentPiece = clickedSquare.piece;
+        opponentPiece.live = false;
+        opponentPiece.square.piece = null;
+        opponentPiece.square = null;
+
+        // move the piece
+        currentlySelectedPiece.move(clickedSquare.pos);
+
+        // clear the selected piece.
+        if (currentlySelectedPiece.selected) {
+          currentlySelectedPiece.selected = false;
+        }
+
+        // reset all highlighted squares
+        for (let square of this.squares) {
+          square.highlight = false;
+        }
       }
     }
 
