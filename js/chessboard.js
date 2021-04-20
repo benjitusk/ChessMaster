@@ -1,5 +1,5 @@
 class ChessBoard {
-  constructor() {
+  constructor(defaultPieces) {
     this.width = 8;
     this.height = 8;
     this.size = 90;
