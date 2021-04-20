@@ -45,13 +45,57 @@ class Piece {
   getValidSquares() {
     let x = this.pos.x;
     let y = this.pos.y;
-    let squares = [];
+    let coords = [
+      [x, y]
+    ];
     switch (this.type) {
       case 'pawn':
-        squares.push(chessBoard.getSquareFromXY(x, y - 1));
+        // Can move 1 sq fwd
+        // First move can be 2 sq fwd
+        // Pawns can only move AWAY from the starting point
+
+        // IF THE PAWN CANNOT ATTACK:
+        if (this.startedAtTop) {
+          coords.push([x, y + 1]);
+          if (!this.hasMoved) coords.push([x, y + 2]);
+        } else {
+          coords.push([x, y - 1]);
+          if (!this.hasMoved) coords.push([x, y - 2]);
+        }
+        // Can ONLY attack 1 sq fwd-diag
+        // IF THE PAWN CAN ATTACK THO...
+
+        break;
+      case 'rook':
+
+        // Can move vert and hori in any dir
+        // until stopped by a piece or game edge
+        break;
+      case 'knight':
+        //
+        break;
+      case 'bishop':
+        // Can move diag in any dir until
+        // stopped by a piece or game edge
+        break;
+      case 'king':
+        // Can move 1 sq in any direction
+        // UNLESS that square is in check
+        break;
+      case 'queen':
+        // Can move vert, hori, and diag in any
+        // dir until stopped by piece or game edge
         break;
     }
-
+    let squares = [];
+    for (let pair of coords) {
+      x = pair[0];
+      y = pair[1];
+      // This is where to check if it goes off the board or
+      // into another piece.
+      if (x < 0 || y < 0 || x > 8 || y > 8) continue;
+      squares.push(chessBoard.getSquareFromXYorVector(x, y));
+    }
     return squares;
   }
 
