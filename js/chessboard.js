@@ -102,6 +102,67 @@ class ChessBoard {
   }
 
   mouseClicked() {
+    // If there are highlighted squares,
+    // it means that there is a selected piece
+
+    // when a square is clicked:
+    let clickedSquare = this.getSquareUnderMouse();
+    let currentlySelectedPiece = this.getSelectedPiece();
+
+    if (!clickedSquare.piece) {
+      // if it's an empty square
+      if (clickedSquare.highlight) {
+        // If it's highlighted: (implying that there is a currently selected piece)
+        // move the selected piece there,
+        currentlySelectedPiece.move(clickedSquare.pos);
+
+        // clear the selected piece.
+        if (currentlySelectedPiece.selected) {
+          currentlySelectedPiece.selected = false;
+        }
+
+        // reset all highlighted squares
+        for (let square of this.squares) {
+          square.highlight = false;
+        }
+
+      } else {
+        // if it's empty and unhighlighted
+        // clear the selected piece.
+        if (currentlySelectedPiece.selected) {
+          currentlySelectedPiece.selected = false;
+        }
+        // reset all highlighted squares
+        for (let square of this.squares) {
+          square.highlight = false;
+        }
+      }
+    } else {
+      // if there is a piece in the square
+      if (!clickedSquare.highlight && clickedSquare.piece.team == currentMove) {
+        // if it's unhighlighted, and the piece belongs to the turnholder:
+        // clear the selected piece
+        if (currentlySelectedPiece.selected) {
+          currentlySelectedPiece.selected = false;
+        }
+        // reset all highlighted squares
+        for (let square of this.squares) {
+          square.highlight = false;
+        }
+        // select the piece
+        clickedSquare.piece.selected = true;
+      } else if (clickedSquare.piece.selected) {
+        // if the piece is the same one we selected earlier
+        // clear the selected piece
+        if (currentlySelectedPiece.selected) {
+          currentlySelectedPiece.selected = false;
+        }
+
+        // reset all highlighted squares
+        for (let square of this.squares) {
+          square.highlight = false;
+        }
+      }
     }
 
 
