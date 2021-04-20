@@ -12,7 +12,19 @@ class Piece {
     this.startedAtTop = (this.pos.y < 4);
   }
 
-  move(loc) {
+  move(destination) {
+    // check if opponent piece is there
+    // this.pos = pos;
+    if (destination.equals(this.pos)) {
+      chessBoard.updateSquares();
+      return;
+    }
+
+    this.pos = destination;
+    this.hasMoved = true;
+    this.selected = false;
+    chessBoard.updateSquares();
+    chessBoard.switchCurrentMove();
 
   }
 
