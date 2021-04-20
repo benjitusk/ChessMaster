@@ -1,14 +1,19 @@
 class Piece {
-  constructor(type, team, pos) {
+  constructor(type, team, pos, size) {
     this.type = type;
-    this.team = team;
+    this.team = team; // 'white' / 'black'
     this.live = true;
     this.selected = false;
-    this.pos = pos;
+    this.pos = pos; // p5 Vector
+    this.imageLocation = 'imgs/' + this.team + '_' + this.type + '.png';
+    this.icon = loadImage(this.imageLocation);
+    this.size = size;
   }
+
   move(loc) {
 
   }
+
   validateMove(loc) {
 
   }
