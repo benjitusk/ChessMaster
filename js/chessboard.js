@@ -27,8 +27,25 @@ class ChessBoard {
     }
   }
 
-  updatePieces(pieces) {
-    this.pieces = pieces;
+  renderBoard() {
+    for (let square of this.squares) {
+      square.render();
+    }
+    this.renderPieces();
+  }
+
+  updateSquares() {
+    for (let square of this.squares) {
+      square.highlight = false;
+      let pos = createVector(square.x, square.y);
+      for (let piece of this.pieces) {
+        if (piece.pos.equals(pos)) {
+          square.piece = piece;
+          square.piece.square = square;
+          break;
+        }
+      }
+    }
   }
 
   renderPieces() {
