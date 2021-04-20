@@ -73,10 +73,17 @@ class ChessBoard {
     }
   }
 
-  getPieceUnderMouse() {
+  getSelectedPiece() {
+    for (let piece of this.pieces) {
+      if (piece.selected) return piece;
+    }
+    return false; // when there are no selected pieces
+  }
+
+  getSquareUnderMouse() {
     for (let square of this.squares) {
       if (square.mouseOver) {
-        return square.piece;
+        return square;
       }
     }
     return null;
