@@ -27,4 +27,18 @@ class Piece {
       }
     }
   }
+
+  getValidSquares() {
+    let x = this.pos.x;
+    let y = this.pos.y;
+    let squares = [];
+    switch (this.type) {
+      case 'pawn':
+        squares.push(chessBoard.getSquareFromXY(x, y - 1));
+        break;
+    }
+
+    return squares;
+  }
+
 }
