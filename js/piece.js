@@ -19,6 +19,12 @@ class Piece {
   }
 
   render() {
-    // get image based off this.type then render it at this.pos
+    image(this.icon, this.pos.x * this.size, this.pos.y * this.size, this.size, this.size);
+    if (this.selected) {
+      let possibleSquares = this.getValidSquares();
+      for (let square of possibleSquares) {
+        square.highlight = true;
+      }
+    }
   }
 }
