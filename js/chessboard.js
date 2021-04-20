@@ -45,11 +45,21 @@ class ChessBoard {
 
   updateSquares() {
     for (let square of this.squares) {
+      // Turn off the highlighting of all squares
       square.highlight = false;
-      let pos = createVector(square.x, square.y);
+      // un-assign pieces from squares
+      // this is needed because
+      // although there is a square for every piece,
+      // there is NOT a piece for every square.
+      // We don't want there to be squares that are
+      // still holding onto pieces that used to be there
+      // but are now empty
+      square.piece = undefined;
       for (let piece of this.pieces) {
-        if (piece.pos.equals(pos)) {
+        if (piece.pos.equals(square.pos)) {
+          // re-assign pieces to squares
           square.piece = piece;
+          // assign square to piece
           square.piece.square = square;
           break;
         }
