@@ -33,11 +33,13 @@ class Piece {
   }
 
   render() {
-    image(this.icon, this.pos.x * this.size, this.pos.y * this.size, this.size, this.size);
-    if (this.selected) {
-      let possibleSquares = this.getValidSquares();
-      for (let square of possibleSquares) {
-        square.highlight = true;
+    if (this.live) {
+      image(this.icon, this.pos.x * this.size, this.pos.y * this.size, this.size, this.size);
+      if (this.selected) {
+        let possibleSquares = this.getValidSquares();
+        for (let square of possibleSquares) {
+          square.highlight = true;
+        }
       }
     }
   }
