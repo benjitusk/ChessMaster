@@ -30,4 +30,12 @@ class ChessBoard {
     }
   }
 
+  getPieceUnderMouse() {
+    for (let square of this.squares) {
+      if (square.mouseOver) {
+        return square.piece;
+      }
+    }
+    return null;
+  }
 }
