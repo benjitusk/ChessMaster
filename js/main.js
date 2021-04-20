@@ -13,8 +13,10 @@ let defaultPositions = [
 ];
 
 function setup() {
+  noStroke();
   createCanvas(windowWidth, windowHeight);
   chessBoard = new ChessBoard(defaultPositions);
+  chessBoard.updateSquares();
 }
 
 function draw() {
