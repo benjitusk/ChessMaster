@@ -4,6 +4,7 @@ class Square {
     this.x = pos.x;
     this.y = pos.y;
     this.size = size;
+    this.piece = undefined;
     this.highlight = false;
     if (( /*Both even*/ this.x % 2 == 0 && this.y % 2 == 0) || ( /*Both odd*/ this.x % 2 == 1 && this.y % 2 == 1)) {
       this.color = 'light';
@@ -35,9 +36,14 @@ class Square {
       default:
         fillColor = color(255, 0, 0);
     }
-    if (this.highlight) fillColor = color(112, 162, 163);
     fill(fillColor);
     rect(this.pos.x * this.size, this.pos.y * this.size, this.size);
+    if (this.highlight) {
+      if (this.piece && this.piece.selected) return;
+      fillColor = color(100, 100);
+      fill(fillColor);
+      circle((this.pos.x * this.size) + this.size / 2, (this.pos.y * this.size) + this.size / 2, this.size / 3);
+    }
   }
 
 }
