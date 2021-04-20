@@ -27,6 +27,15 @@ class ChessBoard {
     }
   }
 
+  isMouseOn() {
+    return (mouseX > 0 && mouseX < this.width * this.size &&
+      mouseY > 0 && mouseY < this.height * this.size);
+  }
+
+  switchCurrentMove() {
+    currentMove = (currentMove == 'white') ? 'black' : 'white';
+  }
+
   renderBoard() {
     for (let square of this.squares) {
       square.render();
