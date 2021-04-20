@@ -49,7 +49,7 @@ class ChessBoard {
   }
 
   renderPieces() {
-    for (let piece in this.pieces) {
+    for (let piece of this.pieces) {
       piece.render();
     }
   }
