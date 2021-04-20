@@ -62,4 +62,20 @@ class ChessBoard {
     }
     return null;
   }
+
+  getSquareFromXY(x, y) {
+    for (let square of this.squares) {
+      if (square.x == x && square.y == y) return square;
+    }
+  }
+}
+
+function mousePressed() {
+  chessBoard.updateSquares();
+  let selectedPiece = chessBoard.getPieceUnderMouse();
+  if (selectedPiece == null) return;
+  for (let piece of chessBoard.pieces) {
+    piece.selected = false;
+  }
+  selectedPiece.selected = true;
 }
