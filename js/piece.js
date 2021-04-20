@@ -59,15 +59,13 @@ class Piece {
         // Pawns can only move AWAY from the starting point
 
         // IF THE PAWN CANNOT ATTACK:
-        if (this.startedAtTop) {
-          coords.push([x, y + 1]);
-          if (!this.hasMoved) coords.push([x, y + 2]);
-        } else {
-          coords.push([x, y - 1]);
-          if (!this.hasMoved) coords.push([x, y - 2]);
-        }
-        // Can ONLY attack 1 sq fwd-diag
-        // IF THE PAWN CAN ATTACK THO...
+        let direction = this.startedAtTop ? 1 : -1;
+        coords.push([x, y + 1 * direction]);
+        if (!this.hasMoved) coords.push([x, y + 2 * direction]);
+
+
+
+        // Dafuq is an en passant??
 
         break;
       case 'rook':
