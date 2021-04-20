@@ -8,6 +8,8 @@ class Piece {
     this.imageLocation = 'imgs/' + this.team + '_' + this.type + '.png';
     this.icon = loadImage(this.imageLocation);
     this.size = size;
+    this.hasMoved = false;
+    this.startedAtTop = (this.pos.y < 4);
   }
 
   move(loc) {
