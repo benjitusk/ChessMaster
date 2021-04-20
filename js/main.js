@@ -1,5 +1,5 @@
 // ==== Global Variables ====
-let currentMove = "white";
+let currentMove = "black";
 let chessBoard;
 let defaultPositions = [
   ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook'],
@@ -13,7 +13,7 @@ let defaultPositions = [
 ];
 
 function setup() {
-  noStroke();
+  // noStroke();
   createCanvas(windowWidth, windowHeight);
   chessBoard = new ChessBoard(defaultPositions);
   chessBoard.updateSquares();
@@ -22,4 +22,8 @@ function setup() {
 function draw() {
   background(204);
   chessBoard.renderBoard();
+}
+
+function mousePressed() {
+  if (chessBoard.isMouseOn()) chessBoard.mouseClicked();
 }
