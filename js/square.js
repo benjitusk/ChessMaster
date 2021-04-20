@@ -1,5 +1,6 @@
 class Square {
   constructor(pos, size) {
+    this.pos = pos;
     this.x = pos.x;
     this.y = pos.y;
     this.size = size;
@@ -15,10 +16,10 @@ class Square {
 
     // make an if statement that checks if the mouse is within the bounds of the square.
     // If it's true, tint the box or something
-    if (mouseX > this.x * this.size &&
-      mouseX < (this.x + 1) * this.size &&
-      mouseY > this.y * this.size &&
-      mouseY < (this.y + 1) * this.size) {
+    if (mouseX > this.pos.x * this.size &&
+      mouseX < (this.pos.x + 1) * this.size &&
+      mouseY > this.pos.y * this.size &&
+      mouseY < (this.pos.y + 1) * this.size) {
       this.mouseOver = true;
     } else {
       this.mouseOver = false;
@@ -34,9 +35,9 @@ class Square {
       default:
         fillColor = color(255, 0, 0);
     }
-    if (this.highlight || this.mouseOver) fillColor = color(112, 162, 163);
+    if (this.highlight) fillColor = color(112, 162, 163);
     fill(fillColor);
-    rect(this.x * this.size, this.y * this.size, this.size);
+    rect(this.pos.x * this.size, this.pos.y * this.size, this.size);
   }
 
 }

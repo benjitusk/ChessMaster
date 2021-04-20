@@ -63,9 +63,15 @@ class ChessBoard {
     return null;
   }
 
-  getSquareFromXY(x, y) {
-    for (let square of this.squares) {
-      if (square.x == x && square.y == y) return square;
+  getSquareFromXYorVector(x, y) {
+    if (x.constructor.name == "Vector") {
+      for (let square of this.squares) {
+        if (square.pos.equals(x)) return square;
+      }
+    } else {
+      for (let square of this.squares) {
+        if (square.pos.x == x && square.pos.y == y) return square;
+      }
     }
   }
 }
