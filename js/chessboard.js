@@ -3,19 +3,26 @@ class ChessBoard {
     this.width = 8;
     this.height = 8;
     this.size = 90;
-    this.pieces = []
-  }
-
-  renderBoard() {
-    for (var i = 0; i < this.width; i++) {
-      for (var j = 0; j < this.height; j++) {
-        // if i and j are BOTH odd, or BOTH even, make the square light.
-        if (( /*Both even*/ i % 2 == 0 && j % 2 == 0) || ( /*Both odd*/ i % 2 == 1 && j % 2 == 1)) {
-          fill(255);
+    this.pieces = [];
+    this.squares = [];
+    for (let i = 0; i < this.width; i++) {
+      for (let j = 0; j < this.height; j++) {
+        let pos = createVector(i, j);
+        this.squares.push(new Square(pos, this.size));
+      }
+    }
+    for (var i = 0; i < defaultPieces.length; i++) {
+      for (var j = 0; j < defaultPieces[i].length; j++) {
+        let team;
+        if (i < 4) { // If the pieces are generated on the top portion of the board
+          team = 'black';
         } else {
-          fill(0);
+          team = 'white';
         }
-        rect(i * this.size, j * this.size, this.size);
+        let pos = createVector(j, i);
+        if (defaultPieces[i][j] != 'none') {
+          this.pieces.push(new Piece(defaultPieces[i][j], team, pos, this.size));
+        }
       }
     }
   }
