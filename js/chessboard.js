@@ -100,14 +100,10 @@ class ChessBoard {
       }
     }
   }
-}
 
-function mousePressed() {
-  chessBoard.updateSquares();
-  let selectedPiece = chessBoard.getPieceUnderMouse();
-  if (selectedPiece == null) return;
-  for (let piece of chessBoard.pieces) {
-    piece.selected = false;
+  mouseClicked() {
+    }
+
+
   }
-  selectedPiece.selected = true;
 }
