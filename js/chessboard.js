@@ -1,8 +1,8 @@
 class ChessBoard {
   constructor(defaultPieces) {
-    this.width = 8;
-    this.height = 8;
-    this.size = 90;
+    this.height = defaultPieces.length;
+    this.width = defaultPieces[0].length;
+    this.size = floor(windowHeight / this.height);
     this.pieces = [];
     this.squares = [];
     for (let i = 0; i < this.width; i++) {
