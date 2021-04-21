@@ -222,8 +222,103 @@ class Piece {
         // UNLESS that square is in check
         break;
       case 'queen':
-        // Can move vert, hori, and diag in any
-        // dir until stopped by piece or game edge
+        // Castling:
+        // Both king and queen must be unmoved
+        // board must be 8x8
+        // copy ROOK code and BISHOP code
+        // ROOK:
+        // Start at the Queen going up (-Y)
+        for (let i = y; i >= 0; i--) {
+          let square = chessBoard.getSquareFromXYorVector(x, i);
+          if (square.piece && square.piece != this) {
+            if (square.piece.team != currentMove) coords.push([x, i]);
+            break;
+          }
+          coords.push([x, i]);
+        }
+        // Start at the Queen going down (+Y)
+        for (let i = y; i < chessBoard.height; i++) {
+          let square = chessBoard.getSquareFromXYorVector(x, i);
+          if (square.piece && square.piece != this) {
+            if (square.piece.team != currentMove) coords.push([x, i]);
+            break;
+          }
+          coords.push([x, i]);
+        }
+        // Start at the Queen going right (+X)
+        for (let i = x; i < chessBoard.width; i++) {
+          let square = chessBoard.getSquareFromXYorVector(i, y);
+          if (square.piece && square.piece != this) {
+            if (square.piece.team != currentMove) coords.push([i, y]);
+            break;
+          }
+          coords.push([i, y]);
+        }
+        // Start at the Queen going down (-Y)
+        for (let i = x; i >= 0; i--) {
+          let square = chessBoard.getSquareFromXYorVector(i, y);
+          if (square.piece && square.piece != this) {
+            if (square.piece.team != currentMove) coords.push([i, y]);
+            break;
+          }
+          coords.push([i, y]);
+        }
+
+        // BISHOP:
+        // Can move diag in any dir until
+        // stopped by a piece or game edge
+        let continueQueenRightUp = true;
+        let continueQueenRightDown = true;
+        let continueQueenLeftUp = true;
+        let continueQueenLeftDown = true;
+        for (let xOffset = 0; xOffset < chessBoard.width; xOffset++) {
+          if (continueQueenRightDown) {
+            let yOffset = xOffset;
+            let newX = x + xOffset;
+            let newY = y + yOffset;
+            let square = chessBoard.getSquareFromXYorVector(newX, newY);
+
+            if (square && square.piece && square.piece != this) {
+              if (square.piece.team != currentMove) coords.push([newX, newY]);
+              continueQueenRightDown = false;
+            }
+            coords.push([newX, newY]);
+          }
+          if (continueQueenLeftDown) {
+            let yOffset = xOffset;
+            let newX = x - xOffset;
+            let newY = y + yOffset;
+            let square = chessBoard.getSquareFromXYorVector(newX, newY);
+            if (square && square.piece && square.piece != this) {
+              if (square.piece.team != currentMove) coords.push([newX, newY]);
+              continueQueenLeftDown = false;
+            }
+            coords.push([newX, newY]);
+          }
+          if (continueQueenRightUp) {
+            let yOffset = xOffset;
+            let newX = x + xOffset;
+            let newY = y - yOffset;
+            let square = chessBoard.getSquareFromXYorVector(newX, newY);
+            if (square && square.piece && square.piece != this) {
+              if (square.piece.team != currentMove) coords.push([newX, newY]);
+              continueQueenRightUp = false;
+            }
+            coords.push([newX, newY]);
+          }
+          if (continueQueenLeftUp) {
+            let yOffset = xOffset;
+            let newX = x - xOffset;
+            let newY = y - yOffset;
+            let square = chessBoard.getSquareFromXYorVector(newX, newY);
+            if (square && square.piece && square.piece != this) {
+              if (square.piece.team != currentMove) coords.push([newX, newY]);
+              continueQueenLeftUp = false;
+            }
+            coords.push([newX, newY]);
+          }
+
+        }
         break;
     }
     let squares = [];
