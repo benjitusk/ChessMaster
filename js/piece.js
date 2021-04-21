@@ -58,11 +58,30 @@ class Piece {
         // First move can be 2 sq fwd
         // Pawns can only move AWAY from the starting point
 
-        // IF THE PAWN CANNOT ATTACK:
         let direction = this.startedAtTop ? 1 : -1;
-        coords.push([x, y + 1 * direction]);
-        if (!this.hasMoved) coords.push([x, y + 2 * direction]);
+        // Check one forward
+        let newY = y + direction;
+        let squareToBeChecked = chessBoard.getSquareFromXYorVector(x, newY);
+        if (squareToBeChecked && (!squareToBeChecked.piece || squareToBeChecked.team == currentMove)) {
+          coords.push([x, newY]);
+          newY += direction;
+          let squareToBeChecked = chessBoard.getSquareFromXYorVector(x, newY);
+          if (squareToBeChecked && !squareToBeChecked.piece)
+            if (!this.hasMoved) coords.push([x, newY]);
+        }
+        // check the piece of (x±1, y+direction)
+        newY = y + direction;
+        let newX = x + 1;
+        // If there is a piece there
+        squareToBeChecked = chessBoard.getSquareFromXYorVector(newX, newY);
+        if (squareToBeChecked && squareToBeChecked.piece)
+          coords.push([newX, newY]);
 
+        newX = x - 1; // look on the other side
+        // If there is a piece there
+        squareToBeChecked = chessBoard.getSquareFromXYorVector(newX, newY);
+        if (squareToBeChecked && squareToBeChecked.piece)
+          coords.push([newX, newY]);
 
 
         // Dafuq is an en passant??
