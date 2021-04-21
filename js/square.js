@@ -14,7 +14,6 @@ class Square {
   }
 
   render() {
-
     // make an if statement that checks if the mouse is within the bounds of the square.
     // If it's true, tint the box or something
     if (mouseX > this.pos.x * this.size &&
@@ -36,6 +35,7 @@ class Square {
       default:
         fillColor = color(255, 0, 0);
     }
+    // if (this.highlight) fillColor = color(255, 0, 0);
     fill(fillColor);
     rect(this.pos.x * this.size, this.pos.y * this.size, this.size);
     if (this.highlight) {
@@ -43,7 +43,13 @@ class Square {
       fillColor = color(100, 100);
       fill(fillColor);
       circle((this.pos.x * this.size) + this.size / 2, (this.pos.y * this.size) + this.size / 2, this.size / 3);
+      if (this.piece && this.piece.team != currentMove) {
+        fill(color(255, 0, 0));
+        rect(this.pos.x * this.size, this.pos.y * this.size, this.size);
+      }
     }
+    // fill(0);
+    // text("(" + this.pos.x + "," + this.pos.y + ")", this.pos.x * this.size + this.size / 2, this.pos.y * this.size + this.size / 2);
   }
 
 }
