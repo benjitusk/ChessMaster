@@ -91,6 +91,50 @@ class Piece {
 
         // Can move vert and hori in any dir
         // until stopped by a piece or game edge
+
+
+        // Start at the rook going up (-Y)
+        for (let i = y; i >= 0; i--) {
+          let square = chessBoard.getSquareFromXYorVector(x, i);
+          if (square.piece && square.piece != this) {
+            if (square.piece.team != currentMove) coords.push([x, i]);
+            break;
+          }
+          coords.push([x, i]);
+        }
+
+        // Start at the rook going down (+Y)
+        for (let i = y; i < chessBoard.height; i++) {
+          let square = chessBoard.getSquareFromXYorVector(x, i);
+          if (square.piece && square.piece != this) {
+            if (square.piece.team != currentMove) coords.push([x, i]);
+            break;
+          }
+          coords.push([x, i]);
+        }
+
+
+        // Start at the rook going right (+X)
+        for (let i = x; i < chessBoard.width; i++) {
+          let square = chessBoard.getSquareFromXYorVector(i, y);
+          if (square.piece && square.piece != this) {
+            if (square.piece.team != currentMove) coords.push([i, y]);
+            break;
+          }
+          coords.push([i, y]);
+        }
+
+
+        // Start at the rook going down (-Y)
+        for (let i = x; i >= 0; i--) {
+          let square = chessBoard.getSquareFromXYorVector(i, y);
+          if (square.piece && square.piece != this) {
+            if (square.piece.team != currentMove) coords.push([i, y]);
+            break;
+          }
+          coords.push([i, y]);
+        }
+
         break;
       case 'knight':
         //
