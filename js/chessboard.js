@@ -5,8 +5,9 @@ class ChessBoard {
     this.size = floor(windowHeight / this.height);
     this.pieces = [];
     this.squares = [];
-    for (let i = 0; i < this.width; i++) {
-      for (let j = 0; j < this.height; j++) {
+    this.winner = undefined;
+    for (let i = 0; i < this.height; i++) {
+      for (let j = 0; j < this.width; j++) {
         let pos = createVector(j, i);
         this.squares.push(new Square(pos, this.size));
       }
@@ -30,6 +31,10 @@ class ChessBoard {
   isMouseOn() {
     return (mouseX > 0 && mouseX < this.width * this.size &&
       mouseY > 0 && mouseY < this.height * this.size);
+  }
+
+  gameOver(winner) {
+    this.winner = winner;
   }
 
   switchCurrentMove() {
@@ -56,6 +61,10 @@ class ChessBoard {
       // but are now empty
       square.piece = undefined;
       for (let piece of this.pieces) {
+        if (!piece.live) {
+          piece.square = null;
+          continue;
+        }
         if (piece.pos.equals(square.pos)) {
           // re-assign pieces to squares
           square.piece = piece;
@@ -108,7 +117,7 @@ class ChessBoard {
     // when a square is clicked:
     let clickedSquare = this.getSquareUnderMouse();
     let currentlySelectedPiece = this.getSelectedPiece();
-
+    if (!clickedSquare) return;
     if (!clickedSquare.piece) {
       // if it's an empty square
       if (clickedSquare.highlight) {
@@ -167,6 +176,7 @@ class ChessBoard {
         // Kill the opponent
         let opponentPiece = clickedSquare.piece;
         opponentPiece.live = false;
+        if (opponentPiece.type == 'king') this.gameOver(currentMove);
         opponentPiece.square.piece = null;
         opponentPiece.square = null;
 
