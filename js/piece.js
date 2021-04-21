@@ -137,7 +137,23 @@ class Piece {
 
         break;
       case 'knight':
-        //
+        // either 2 Horizontal and 1 Vertical
+        // or     1 Horizontal and 2 Vertical
+        let possibilities = [
+          [1, 2],
+          [2, 1],
+          [2, -1],
+          [1, -2],
+          [-1, -2],
+          [-2, -1],
+          [-2, 1],
+          [-1, 2]
+        ];
+        for (let pair of possibilities) {
+          let newX = x + pair[0];
+          let newY = y + pair[1];
+          coords.push([newX, newY]);
+        }
         break;
       case 'bishop':
         // Can move diag in any dir until
