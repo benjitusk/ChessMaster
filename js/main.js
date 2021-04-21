@@ -27,15 +27,23 @@ let standardSetup = [
 ];
 
 function setup() {
-  // noStroke();
+  noStroke();
+  textAlign(CENTER, CENTER);
   createCanvas(windowWidth, windowHeight);
-  chessBoard = new ChessBoard(defaultPositions);
+  chessBoard = new ChessBoard(standardSetup);
   chessBoard.updateSquares();
 }
 
 function draw() {
   background(204);
   chessBoard.renderBoard();
+  if (chessBoard.winner) {
+    chessBoard.renderBoard();
+    noLoop();
+    setTimeout(() => {
+      alert(chessBoard.winner + ' wins! Click OK to look at the board for a bit longer, or refresh the page to start again.');
+    }, 3);
+  }
 }
 
 function mousePressed() {
