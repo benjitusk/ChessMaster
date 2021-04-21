@@ -33,23 +33,25 @@ class Square {
         fillColor = color(118, 150, 86);
         break;
       default:
-        fillColor = color(255, 0, 0);
+        fillColor = color(this.color);
     }
     // if (this.highlight) fillColor = color(255, 0, 0);
     fill(fillColor);
     rect(this.pos.x * this.size, this.pos.y * this.size, this.size);
-    if (this.highlight) {
+    if (this.highlight && config.showPossibleMoves) {
       if (this.piece && this.piece.selected) return;
       fillColor = color(100, 100);
       fill(fillColor);
       circle((this.pos.x * this.size) + this.size / 2, (this.pos.y * this.size) + this.size / 2, this.size / 3);
-      if (this.piece && this.piece.team != currentMove) {
-        fill(color(255, 0, 0));
-        rect(this.pos.x * this.size, this.pos.y * this.size, this.size);
-      }
     }
-    // fill(0);
-    // text("(" + this.pos.x + "," + this.pos.y + ")", this.pos.x * this.size + this.size / 2, this.pos.y * this.size + this.size / 2);
+    if (this.highlight && config.highlightPotentialKills && this.piece && this.piece.team != currentMove) {
+      fill(color(262, 177, 153));
+      rect(this.pos.x * this.size, this.pos.y * this.size, this.size);
+    }
+    if (config.showCoordinates) {
+      fill(0);
+      text("(" + this.pos.x + "," + this.pos.y + ")", this.pos.x * this.size + this.size / 2, this.pos.y * this.size + this.size / 2);
+    }
   }
 
 }

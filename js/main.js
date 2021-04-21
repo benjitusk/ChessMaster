@@ -26,7 +26,15 @@ let standardSetup = [
   ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook']
 ];
 
+let config = {
+  pieceSetup: demo,
+  showPossibleMoves: true,
+  highlightPotentialKills: true,
+  showCoordinates: false
+};
+
 function setup() {
+  chessBoard = new ChessBoard(config.pieceSetup);
   noStroke();
   textAlign(CENTER, CENTER);
   createCanvas(windowWidth, windowHeight);
