@@ -1,18 +1,15 @@
 // ==== Global Variables ====
 let currentMove = "white";
 let chessBoard;
-let demo = [ // 11x11
-  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'king', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'bishop', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none']
+let demo = [ // 8x8
+  ['queen', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'none', 'king', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'pawn', 'none', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'none', 'queen', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
+  ['queen', 'none', 'none', 'none', 'none', 'none', 'none', 'none']
 ];
 
 let standardSetup = [
@@ -34,11 +31,11 @@ let config = {
 };
 
 function setup() {
+  createCanvas(windowWidth, windowHeight);
   chessBoard = new ChessBoard(config.pieceSetup);
   noStroke();
+  textSize(chessBoard.size / 6.3);
   textAlign(CENTER, CENTER);
-  createCanvas(windowWidth, windowHeight);
-  chessBoard = new ChessBoard(standardSetup);
   chessBoard.updateSquares();
 }
 

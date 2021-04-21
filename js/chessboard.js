@@ -52,6 +52,7 @@ class ChessBoard {
     for (let square of this.squares) {
       // Turn off the highlighting of all squares
       square.highlight = false;
+      // square.mayEnPassantTo = false;
       // un-assign pieces from squares
       // this is needed because
       // although there is a square for every piece,

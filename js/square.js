@@ -6,6 +6,7 @@ class Square {
     this.size = size;
     this.piece = undefined;
     this.highlight = false;
+    this.mayEnPassantTo = false;
     if (( /*Both even*/ this.x % 2 == 0 && this.y % 2 == 0) || ( /*Both odd*/ this.x % 2 == 1 && this.y % 2 == 1)) {
       this.color = 'light';
     } else {

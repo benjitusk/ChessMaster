@@ -10,19 +10,27 @@ class Piece {
     this.size = size;
     this.hasMoved = false;
     this.startedAtTop = (this.pos.y < 4);
+
   }
 
   move(destination) {
-    // check if opponent piece is there
-    // this.pos = pos;
     if (destination.equals(this.pos)) {
       chessBoard.updateSquares();
       return;
     }
 
+    let destinationSquare = chessBoard.getSquareFromXYorVector(destination.x, destination.y);
     this.pos = destination;
     this.hasMoved = true;
     this.selected = false;
+    if (this.mightEnPassant && destinationSquare.mayEnPassantTo) {
+      // an En Passant was just performed.
+      // Kill the piece we just passed
+      let direction = this.startedAtTop ? 1 : -1;
+      let passedSquare = chessBoard.getSquareFromXYorVector(this.pos.x, this.pos.y - direction);
+      let passedPawn = passedSquare.piece;
+      passedPawn.live = false;
+    }
     chessBoard.updateSquares();
     chessBoard.switchCurrentMove();
 
@@ -83,8 +91,40 @@ class Piece {
         if (squareToBeChecked && squareToBeChecked.piece)
           coords.push([newX, newY]);
 
+        this.mightEnPassant = false;
+        if (this.type == 'pawn' && ((this.startedAtTop && this.pos.y == chessBoard.height - 4) || (!this.startedAtTop && this.pos.y == 3))) {
+          // if we are in the En Passant rows:
+          // check if there is an opponent piece directly next to us.
+          newX = x + 1; // to the right
+          squareToBeChecked = chessBoard.getSquareFromXYorVector(newX, y);
+          if (squareToBeChecked &&
+            squareToBeChecked.piece &&
+            squareToBeChecked.piece.team != currentMove &&
+            squareToBeChecked.piece.type == 'pawn') {
+            this.mightEnPassant = true;
+            // Special statement to color piece
+            // in danger of being captured via En Passant
+            squareToBeChecked.color = color(255, 0, 0, 50);
+            chessBoard.getSquareFromXYorVector(newX, y + direction).mayEnPassantTo = true;
+            coords.push([newX, y + direction]);
+            // we have to let the square know that if the move is taken, kill the residing piece
+          }
+          newX = x - 1; // to the left
+          squareToBeChecked = chessBoard.getSquareFromXYorVector(newX, y);
+          if (squareToBeChecked &&
+            squareToBeChecked.piece &&
+            squareToBeChecked.piece.team != currentMove &&
+            squareToBeChecked.piece.type == 'pawn') {
+            this.mightEnPassant = true;
+            // Special statement to color piece
+            // in danger of being captured via En Passant
+            squareToBeChecked.color = color(255, 0, 0, 50);
+            chessBoard.getSquareFromXYorVector(newX, y + direction).mayEnPassantTo = true;
+            coords.push([newX, y + direction]);
+            // we have to let the square know that if the move is taken, kill the residing piece
+          }
 
-        // Dafuq is an en passant??
+        }
 
         break;
       case 'rook':
