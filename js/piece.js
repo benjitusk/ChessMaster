@@ -327,8 +327,10 @@ class Piece {
       y = pair[1];
       // This is where to check if it goes off the board or
       // into another piece.
-      if (x < 0 || y < 0 || x > 8 || y > 8) continue;
-      squares.push(chessBoard.getSquareFromXYorVector(x, y));
+      if (x < 0 || y < 0 || x >= chessBoard.width || y >= chessBoard.height) continue;
+      let square = chessBoard.getSquareFromXYorVector(x, y);
+      if (square.piece && square.piece.team == currentMove) continue;
+      squares.push(square);
     }
     return squares;
   }
