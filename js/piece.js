@@ -88,7 +88,6 @@ class Piece {
 
         break;
       case 'rook':
-
         // Can move vert and hori in any dir
         // until stopped by a piece or game edge
 
@@ -212,6 +211,13 @@ class Piece {
         }
         break;
       case 'king':
+        for (let i = -1; i <= 1; i++) {
+          for (let j = -1; j <= 1; j++) {
+            let newX = i + x;
+            let newY = j + y;
+            coords.push([newX, newY]);
+          }
+        }
         // Can move 1 sq in any direction
         // UNLESS that square is in check
         break;
