@@ -158,6 +158,58 @@ class Piece {
       case 'bishop':
         // Can move diag in any dir until
         // stopped by a piece or game edge
+        let continuBishopeRightUp = true;
+        let continueRBishopightDown = true;
+        let continBishopueLeftUp = true;
+        let continueBishopLeftDown = true;
+        for (let xOffset = 0; xOffset < chessBoard.width; xOffset++) {
+          if (continueRBishopightDown) {
+            let yOffset = xOffset;
+            let newX = x + xOffset;
+            let newY = y + yOffset;
+            let square = chessBoard.getSquareFromXYorVector(newX, newY);
+
+            if (square && square.piece && square.piece != this) {
+              if (square.piece.team != currentMove) coords.push([newX, newY]);
+              continueRBishopightDown = false;
+            }
+            coords.push([newX, newY]);
+          }
+          if (continueBishopLeftDown) {
+            let yOffset = xOffset;
+            let newX = x - xOffset;
+            let newY = y + yOffset;
+            let square = chessBoard.getSquareFromXYorVector(newX, newY);
+            if (square && square.piece && square.piece != this) {
+              if (square.piece.team != currentMove) coords.push([newX, newY]);
+              continueBishopLeftDown = false;
+            }
+            coords.push([newX, newY]);
+          }
+          if (continuBishopeRightUp) {
+            let yOffset = xOffset;
+            let newX = x + xOffset;
+            let newY = y - yOffset;
+            let square = chessBoard.getSquareFromXYorVector(newX, newY);
+            if (square && square.piece && square.piece != this) {
+              if (square.piece.team != currentMove) coords.push([newX, newY]);
+              continuBishopeRightUp = false;
+            }
+            coords.push([newX, newY]);
+          }
+          if (continBishopueLeftUp) {
+            let yOffset = xOffset;
+            let newX = x - xOffset;
+            let newY = y - yOffset;
+            let square = chessBoard.getSquareFromXYorVector(newX, newY);
+            if (square && square.piece && square.piece != this) {
+              if (square.piece.team != currentMove) coords.push([newX, newY]);
+              continBishopueLeftUp = false;
+            }
+            coords.push([newX, newY]);
+          }
+
+        }
         break;
       case 'king':
         // Can move 1 sq in any direction
