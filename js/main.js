@@ -24,7 +24,7 @@ let standardSetup = [
 ];
 
 let config = {
-  pieceSetup: demo,
+  pieceSetup: standardSetup,
   showPossibleMoves: true,
   highlightPotentialKills: true,
   showCoordinates: false
