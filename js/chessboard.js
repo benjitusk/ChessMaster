@@ -50,6 +50,12 @@ class ChessBoard {
 
   updateSquares() {
     for (let square of this.squares) {
+      // set check status to false
+      square.blackCheck = false;
+      square.whiteCheck = false;
+      square.piecesCausingCheck = [];
+      square.canBlackKingMoveHere = true;
+      square.canWhiteKingMoveHere = true;
       // Turn off the highlighting of all squares
       square.highlight = false;
       // square.mayEnPassantTo = false;
@@ -75,7 +81,21 @@ class ChessBoard {
         }
       }
     }
+    for (let piece of this.pieces) {
+      let validMoves = piece.getValidSquares();
+      for (let square of validMoves) {
+        if ((square.piece && square.piece.team != piece.team) || !square.piece) {
+          square.piecesCausingCheck.push(piece);
+          if (piece.team == 'white') {
+            square.whiteCheck = true;
+          } else {
+            square.blackCheck = true;
+          }
+        }
+      }
+    }
   }
+
 
   renderPieces() {
     for (let piece of this.pieces) {
@@ -99,6 +119,12 @@ class ChessBoard {
     return null;
   }
 
+  /**
+   * Returns the square at the specified (x, y) pair
+   * @param {Number | Vector} x
+   * @param {Number} y
+   * @return {Square | undefined}
+   */
   getSquareFromXYorVector(x, y) {
     if (x.constructor.name == "Vector") {
       for (let square of this.squares) {
@@ -119,6 +145,7 @@ class ChessBoard {
     let clickedSquare = this.getSquareUnderMouse();
     let currentlySelectedPiece = this.getSelectedPiece();
     if (!clickedSquare) return;
+    console.log(clickedSquare);
     if (!clickedSquare.piece) {
       // if it's an empty square
       if (clickedSquare.highlight) {
@@ -149,7 +176,7 @@ class ChessBoard {
       }
     } else {
       // if there is a piece in the square
-      if (!clickedSquare.highlight && clickedSquare.piece.team == currentMove) {
+      if (!clickedSquare.highlight && (clickedSquare.piece.team == currentMove || !config.enforceTurns)) {
         // if it's unhighlighted, and the piece belongs to the turnholder:
         // clear the selected piece
         if (currentlySelectedPiece.selected) {
