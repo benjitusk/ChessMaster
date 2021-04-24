@@ -1,33 +1,36 @@
 // ==== Global Variables ====
 let currentMove = "white";
 let chessBoard;
-let demo = [ // 8x8
-  ['queen', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'king', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'pawn', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'queen', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['queen', 'none', 'none', 'none', 'none', 'none', 'none', 'none']
+let demo = [ // 9x9
+  ['rook', 'knight', 'bishop', 'queen', 'king', 'queen', 'bishop', 'knight', 'rook'],
+  ['pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn'],
+  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
+  ['pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn'],
+  ['rook', 'knight', 'bishop', 'queen', 'king', 'queen', 'bishop', 'knight', 'rook'],
 ];
 
 let standardSetup = [
-  ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook'],
+  ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'],
   ['pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
   ['pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn'],
-  ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook']
+  ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook']
 ];
 
 let config = {
   pieceSetup: standardSetup,
   showPossibleMoves: true,
   highlightPotentialKills: true,
-  showCoordinates: false
+  showCoordinates: false,
+  enforceTurns: true,
+  showAllSquaresInCheck: false,
 };
 
 function setup() {
@@ -46,7 +49,7 @@ function draw() {
     chessBoard.renderBoard();
     noLoop();
     setTimeout(() => {
-      alert(chessBoard.winner + ' wins! Click OK to look at the board for a bit longer, or refresh the page to start again.');
+      alert(chessBoard.winner + ' wins! Click Close to look at the board for a bit longer, or refresh the page to start again.');
     }, 3);
   }
 }
