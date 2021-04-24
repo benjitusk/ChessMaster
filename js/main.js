@@ -28,9 +28,10 @@ let config = {
   pieceSetup: standardSetup,
   showPossibleMoves: true,
   highlightPotentialKills: true,
-  showCoordinates: false,
+  showCoordinates: true,
   enforceTurns: true,
-  showAllSquaresInCheck: false,
+  showAllSquaresInCheck: true,
+  renderPieces: false,
 };
 
 function setup() {
