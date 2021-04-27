@@ -5,18 +5,20 @@ class Square {
     this.y = pos.y;
     this.size = size;
     this.piece = undefined;
+    this.debugMessage = '';
     this.highlight = false;
-    this.mayEnPassantTo = false;
     this.whiteCheck = false;
     this.blackCheck = false;
+    this.mayEnPassantTo = false;
     this.canWhiteKingMoveHere = true;
     this.canBlackKingMoveHere = false;
     this.piecesCausingCheck = [];
     if (( /*Both even*/ this.x % 2 == 0 && this.y % 2 == 0) || ( /*Both odd*/ this.x % 2 == 1 && this.y % 2 == 1)) {
-      this.color = 'light';
+      this.defaultColor = 'light';
     } else {
-      this.color = 'dark';
+      this.defaultColor = 'dark';
     }
+    this.color = this.defaultColor;
   }
 
   render() {
