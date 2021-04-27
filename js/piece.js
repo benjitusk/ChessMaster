@@ -41,7 +41,7 @@ class Piece {
   }
 
   render() {
-    if (this.live) {
+    if (config.renderPieces && this.live) {
       // For when i fix the chess images:
       // image(this.icon, this.pos.x * this.size, this.pos.y * this.size, this.icon.width / 2, this.icon.height / 2);
       image(this.icon, this.pos.x * this.size, this.pos.y * this.size, this.size, this.size);
