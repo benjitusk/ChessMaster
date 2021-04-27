@@ -138,6 +138,7 @@ class ChessBoard {
   }
 
   mouseClicked() {
+
     // If there are highlighted squares,
     // it means that there is a selected piece
 
@@ -145,7 +146,7 @@ class ChessBoard {
     let clickedSquare = this.getSquareUnderMouse();
     let currentlySelectedPiece = this.getSelectedPiece();
     if (!clickedSquare) return;
-    console.log(clickedSquare);
+    if (config.debug) console.log(clickedSquare);
     if (!clickedSquare.piece) {
       // if it's an empty square
       if (clickedSquare.highlight) {
@@ -222,6 +223,7 @@ class ChessBoard {
         }
       }
     }
+    this.updateSquares();
 
 
   }

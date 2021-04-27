@@ -12,6 +12,7 @@ class Square {
     this.mayEnPassantTo = false;
     this.canWhiteKingMoveHere = true;
     this.canBlackKingMoveHere = false;
+    this.specialEnPassantHighlight = false;
     this.piecesCausingCheck = [];
     if (( /*Both even*/ this.x % 2 == 0 && this.y % 2 == 0) || ( /*Both odd*/ this.x % 2 == 1 && this.y % 2 == 1)) {
       this.defaultColor = 'light';
@@ -46,7 +47,7 @@ class Square {
     // if (this.highlight) fillColor = color(255, 0, 0);
     fill(fillColor);
     rect(this.pos.x * this.size, this.pos.y * this.size, this.size);
-    if (this.highlight && config.highlightPotentialKills && this.piece && this.piece.team != currentMove) {
+    if ((this.highlight || this.specialEnPassantHighlight) && config.highlightPotentialKills && this.piece && this.piece.team != currentMove) {
       // currentMove breaks when rule enforcement is off
       fill(color(262, 177, 153));
       rect(this.pos.x * this.size, this.pos.y * this.size, this.size);

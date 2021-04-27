@@ -124,6 +124,7 @@ class Piece {
             this.mightEnPassant = true;
             // Special statement to color piece
             // in danger of being captured via En Passant
+            squareToBeChecked.specialEnPassantHighlight = this.selected ? true : false;
             squareToBeChecked.mayEnPassantTo = true;
             chessBoard.getSquareFromXYorVector(newX, y + direction).mayEnPassantTo = true;
             coords.push({
@@ -142,6 +143,7 @@ class Piece {
             this.mightEnPassant = true;
             // Special statement to color piece
             // in danger of being captured via En Passant
+            squareToBeChecked.specialEnPassantHighlight = this.selected ? true : false;
             squareToBeChecked.mayEnPassantTo = true;
             chessBoard.getSquareFromXYorVector(newX, y + direction).mayEnPassantTo = true;
             coords.push({
@@ -430,6 +432,8 @@ class Piece {
         }
         break;
       case 'king':
+        // Can move 1 sq in any direction
+        // UNLESS that square is in check
         for (let i = -1; i <= 1; i++) {
           for (let j = -1; j <= 1; j++) {
             let newX = i + x;
@@ -448,8 +452,19 @@ class Piece {
             });
           }
         }
-        // Can move 1 sq in any direction
-        // UNLESS that square is in check
+        // Castling
+        // King must not have moved before
+        if (this.hasMoved) break;
+        // check the corner squares in our row.
+        // they must both contain rooks that have not yet moved
+        // Queen side castle
+        let square = chessBoard.getSquareFromXYorVector(0, y);
+        if (!(square.piece && square.piece.type == 'rook' && !square.piece.hasMoved)) break;
+        // Check between our position and the queenside rook, make sure each sq
+        // King side castle
+        square = chessBoard.getSquareFromXYorVector(chessBoard.width - 1, y);
+        if (!(square.piece && square.piece.type == 'rook' && !square.piece.hasMoved)) break;
+
         break;
       case 'queen':
         // Can move vert and hori in any dir
