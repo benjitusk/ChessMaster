@@ -197,7 +197,7 @@ class Piece {
           [-2, 1],
           [-1, 2]
         ];
-        for (let pair of possibilities) {
+        for (let pair of knightPossibilities) {
           let newX = x + pair[0];
           let newY = y + pair[1];
           let square = chessBoard.getSquareFromXYorVector(newX, newY);
@@ -528,6 +528,280 @@ class Piece {
               }
             }
           }
+        }
+        break;
+      case 'star':
+        let starHorizontal = {
+          right: true,
+          rightCheck: true,
+          left: true,
+          leftCheck: true,
+          up: true,
+          upCheck: true,
+          down: true,
+          downCheck: true,
+        };
+
+        // Start at the star going up (-Y)
+        for (let i = y; i >= 0; i--) {
+          let square = chessBoard.getSquareFromXYorVector(x, i);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (starHorizontal.up) {
+              if (square.piece) {
+                starHorizontal.up = false;
+                if (square.piece.type != 'king') {
+                  starHorizontal.upCheck = false;
+                }
+              }
+              coords.push({
+                x: x,
+                y: i
+              });
+            }
+            if (starHorizontal.upCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
+        }
+
+        // Start at the star going down (+Y)
+        for (let i = y; i < chessBoard.height; i++) {
+          let square = chessBoard.getSquareFromXYorVector(x, i);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (starHorizontal.down) {
+              if (square.piece) {
+                starHorizontal.down = false;
+                if (square.piece.type != 'king') {
+                  starHorizontal.downCheck = false;
+                }
+              }
+              coords.push({
+                x: x,
+                y: i
+              });
+            }
+            if (starHorizontal.downCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
+        }
+
+
+        // Start at the star going right (+X)
+        for (let i = x; i < chessBoard.width; i++) {
+          let square = chessBoard.getSquareFromXYorVector(i, y);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (starHorizontal.right) {
+              if (square.piece) {
+                starHorizontal.right = false;
+                if (square.piece.type != 'king') {
+                  starHorizontal.rightCheck = false;
+                }
+              }
+              coords.push({
+                x: i,
+                y: y
+              });
+            }
+            if (starHorizontal.rightCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
+        }
+
+
+        // Start at the star going left (-Y)
+        for (let i = x; i >= 0; i--) {
+          let square = chessBoard.getSquareFromXYorVector(i, y);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (starHorizontal.up) {
+              if (square.piece) {
+                starHorizontal.up = false;
+                if (square.piece.type != 'king') {
+                  starHorizontal.upCheck = false;
+                }
+              }
+              coords.push({
+                x: i,
+                y: y
+              });
+            }
+            if (starHorizontal.upCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
+        }
+
+        // Diagonal
+
+        // The way check works is:
+        // if the king is in a square that can be
+        // captured in the next turn, it is in check
+
+
+        let starDiagonal = {
+          rightDown: true,
+          rightDownCheck: true,
+          leftDown: true,
+          leftDownCheck: true,
+          rightUp: true,
+          rightUpCheck: true,
+          leftUp: true,
+          leftUpCheck: true,
+        };
+
+        for (let offset = 0; offset < chessBoard.width; offset++) {
+          // Right Down
+          let newX = x + offset; // Right (+X)
+          let newY = y + offset; // Down  (+Y)
+          let square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (starDiagonal.rightDown) {
+              square.debugMessage = offset;
+              if (square.piece) {
+                starDiagonal.rightDown = false;
+                if (square.piece.type != 'king') {
+                  starDiagonal.rightDownCheck = false;
+                }
+              }
+              coords.push({
+                x: newX,
+                y: newY
+              });
+            }
+            if (starDiagonal.rightDownCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
+
+          // Left Down
+          newX = x - offset; // Left (-X)
+          newY = y + offset; // Down (+Y)
+          square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (starDiagonal.leftDown) {
+              square.debugMessage = offset;
+              if (square.piece) {
+                starDiagonal.leftDown = false;
+                if (square.piece.type != 'king') {
+                  starDiagonal.leftDownCheck = false;
+                }
+              }
+              coords.push({
+                x: newX,
+                y: newY
+              });
+            }
+            if (starDiagonal.leftDownCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
+
+          // Right Up
+          newX = x + offset; // Right (+X)
+          newY = y - offset; // Up    (-Y)
+          square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (starDiagonal.rightUp) {
+              square.debugMessage = offset;
+              if (square.piece) {
+                starDiagonal.rightUp = false;
+                if (square.piece.type != 'king') {
+                  starDiagonal.rightUpCheck = false;
+                }
+              }
+              coords.push({
+                x: newX,
+                y: newY
+              });
+            }
+            if (starDiagonal.rightUpCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
+
+          // Left Up
+          newX = x - offset; // Left (-X)
+          newY = y - offset; // Up   (-Y)
+          square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (starDiagonal.leftUp) {
+              square.debugMessage = offset;
+              if (square.piece) {
+                starDiagonal.leftUp = false;
+                if (square.piece.type != 'king') {
+                  starDiagonal.leftUpCheck = false;
+                }
+              }
+              coords.push({
+                x: newX,
+                y: newY
+              });
+            }
+            if (starDiagonal.leftUpCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
+        }
+        // either 2 Horizontal and 1 Vertical
+        // or     1 Horizontal and 2 Vertical
+        let starPossibilities = [
+          [1, 2],
+          [2, 1],
+          [2, -1],
+          [1, -2],
+          [-1, -2],
+          [-2, -1],
+          [-2, 1],
+          [-1, 2]
+        ];
+        for (let pair of starPossibilities) {
+          let newX = x + pair[0];
+          let newY = y + pair[1];
+          let square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square) {
+            if (this.team == 'white') {
+              square.canBlackKingMoveHere = false;
+            } else {
+              square.canWhiteKingMoveHere = false;
+            }
+          }
+          coords.push({
+            x: newX,
+            y: newY
+          });
         }
         break;
     }
