@@ -330,9 +330,9 @@ class Piece {
             let newY = j + y;
             // check if that piece is in check by other team
             let square = chessBoard.getSquareFromXYorVector(newX, newY);
-            if (square && square.piecesCausingCheck.length > 0) {
+            if (square) {
               // if we are white, check for blackCheck, and vice vesa
-              if (!(this.team == 'white' ? !square.blackCheck : square.whiteCheck)) {
+              if (!((this.team == 'white' && square.canWhiteKingMoveHere) || (this.team == 'black' && square.canBlackKingMoveHere))) {
                 continue;
               }
             }
