@@ -200,63 +200,127 @@ class Piece {
         for (let pair of possibilities) {
           let newX = x + pair[0];
           let newY = y + pair[1];
+          let square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square) {
+            if (this.team == 'white') {
+              square.canBlackKingMoveHere = false;
+            } else {
+              square.canWhiteKingMoveHere = false;
+            }
+          }
           coords.push([newX, newY]);
         }
         break;
       case 'bishop':
         // Can move diag in any dir until
         // stopped by a piece or game edge
-        let continuBishopeRightUp = true;
-        let continueRBishopightDown = true;
-        let continBishopueLeftUp = true;
-        let continueBishopLeftDown = true;
-        for (let xOffset = 0; xOffset < chessBoard.width; xOffset++) {
-          if (continueRBishopightDown) {
-            let yOffset = xOffset;
-            let newX = x + xOffset;
-            let newY = y + yOffset;
-            let square = chessBoard.getSquareFromXYorVector(newX, newY);
+        let bishopDiagonal = {
+          rightDown: true,
+          rightDownCheck: true,
+          leftDown: true,
+          leftDownCheck: true,
+          rightUp: true,
+          rightUpCheck: true,
+          leftUp: true,
+          leftUpCheck: true,
+        };
 
-            if (square && square.piece && square.piece != this) {
-              if (square.piece.team != currentMove) coords.push([newX, newY]);
-              continueRBishopightDown = false;
+        for (let offset = 0; offset < chessBoard.width; offset++) {
+          // Right Down
+          let newX = x + offset; // Right (+X)
+          let newY = y + offset; // Down  (+Y)
+          let square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (bishopDiagonal.rightDown) {
+              square.debugMessage = offset;
+              if (square.piece) {
+                bishopDiagonal.rightDown = false;
+                if (square.piece.type != 'king') {
+                  bishopDiagonal.rightDownCheck = false;
+                }
+              }
+              coords.push([newX, newY]);
             }
-            coords.push([newX, newY]);
-          }
-          if (continueBishopLeftDown) {
-            let yOffset = xOffset;
-            let newX = x - xOffset;
-            let newY = y + yOffset;
-            let square = chessBoard.getSquareFromXYorVector(newX, newY);
-            if (square && square.piece && square.piece != this) {
-              if (square.piece.team != currentMove) coords.push([newX, newY]);
-              continueBishopLeftDown = false;
+            if (bishopDiagonal.rightDownCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
             }
-            coords.push([newX, newY]);
-          }
-          if (continuBishopeRightUp) {
-            let yOffset = xOffset;
-            let newX = x + xOffset;
-            let newY = y - yOffset;
-            let square = chessBoard.getSquareFromXYorVector(newX, newY);
-            if (square && square.piece && square.piece != this) {
-              if (square.piece.team != currentMove) coords.push([newX, newY]);
-              continuBishopeRightUp = false;
-            }
-            coords.push([newX, newY]);
-          }
-          if (continBishopueLeftUp) {
-            let yOffset = xOffset;
-            let newX = x - xOffset;
-            let newY = y - yOffset;
-            let square = chessBoard.getSquareFromXYorVector(newX, newY);
-            if (square && square.piece && square.piece != this) {
-              if (square.piece.team != currentMove) coords.push([newX, newY]);
-              continBishopueLeftUp = false;
-            }
-            coords.push([newX, newY]);
           }
 
+          // Left Down
+          newX = x - offset; // Left (-X)
+          newY = y + offset; // Down (+Y)
+          square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (bishopDiagonal.leftDown) {
+              square.debugMessage = offset;
+              if (square.piece) {
+                bishopDiagonal.leftDown = false;
+                if (square.piece.type != 'king') {
+                  bishopDiagonal.leftDownCheck = false;
+                }
+              }
+              coords.push([newX, newY]);
+            }
+            if (bishopDiagonal.leftDownCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
+
+          // Right Up
+          newX = x + offset; // Right (+X)
+          newY = y - offset; // Up    (-Y)
+          square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (bishopDiagonal.rightUp) {
+              square.debugMessage = offset;
+              if (square.piece) {
+                bishopDiagonal.rightUp = false;
+                if (square.piece.type != 'king') {
+                  bishopDiagonal.rightUpCheck = false;
+                }
+              }
+              coords.push([newX, newY]);
+            }
+            if (bishopDiagonal.rightUpCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
+
+          // Left Up
+          newX = x - offset; // Left (-X)
+          newY = y - offset; // Up   (-Y)
+          square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (bishopDiagonal.leftUp) {
+              square.debugMessage = offset;
+              if (square.piece) {
+                bishopDiagonal.leftUp = false;
+                if (square.piece.type != 'king') {
+                  bishopDiagonal.leftUpCheck = false;
+                }
+              }
+              coords.push([newX, newY]);
+            }
+            if (bishopDiagonal.leftUpCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
         }
         break;
       case 'king':
@@ -279,168 +343,191 @@ class Piece {
         // UNLESS that square is in check
         break;
       case 'queen':
-        // Castling:
-        // Both king and queen must be unmoved
-        // board must be 8x8
-        // copy ROOK code and BISHOP code
-        // ROOK:
-        // Start at the Queen going up (-Y)
-        let continueInDirection = true;
+        // Can move vert and hori in any dir
+        // until stopped by a piece or game edge
+        // Start at the queen going up (-Y)
+        let addMoreSquares = true;
         for (let i = y; i >= 0; i--) {
           let square = chessBoard.getSquareFromXYorVector(x, i);
-          if (square.piece) {
-            if (this.team == 'white') {
-              square.canBlackKingMoveHere = false;
-            } else {
-              square.canWhiteKingMoveHere = false;
-            }
-            if (square.piece.team != this.team && continueInDirection) {
-              coords.push([x, i]);
-              continueInDirection = false;
-            }
+          if (this.team == 'white') {
+            square.canBlackKingMoveHere = false;
           } else {
-            coords.push([x, i]);
+            square.canWhiteKingMoveHere = false;
           }
+          if (square.piece && square.piece != this) {
+            if (square.piece.team != currentMove) {
+              if (addMoreSquares) coords.push([x, i]);
+            }
+            if (square.piece.type != 'king') addMoreSquares = false;
+          }
+          if (addMoreSquares) coords.push([x, i]);
         }
-        // Start at the Queen going down (+Y)
-        continueInDirection = true;
+        // Start at the queen going down (+Y)
+        addMoreSquares = true;
         for (let i = y; i < chessBoard.height; i++) {
           let square = chessBoard.getSquareFromXYorVector(x, i);
-          if (square.piece) {
-            if (this.team == 'white') {
-              square.canBlackKingMoveHere = false;
-            } else {
-              square.canWhiteKingMoveHere = false;
-            }
-            if (square.piece.team != this.team && continueInDirection) {
-              coords.push([x, i]);
-              continueInDirection = false;
-            }
+          if (this.team == 'white') {
+            square.canBlackKingMoveHere = false;
           } else {
-            coords.push([x, i]);
+            square.canWhiteKingMoveHere = false;
           }
+          if (square.piece && square.piece != this) {
+            if (square.piece.team != currentMove) {
+              if (addMoreSquares) coords.push([x, i]);
+            }
+            if (square.piece.type != 'king') addMoreSquares = false;
+          }
+          if (addMoreSquares) coords.push([x, i]);
         }
-        // Start at the Queen going right (+X)
-        continueInDirection = true;
+        // Start at the queen going right (+X)
+        addMoreSquares = true;
         for (let i = x; i < chessBoard.width; i++) {
           let square = chessBoard.getSquareFromXYorVector(i, y);
-          if (square.piece) {
-            if (this.team == 'white') {
-              square.canBlackKingMoveHere = false;
-            } else {
-              square.canWhiteKingMoveHere = false;
-            }
-            if (square.piece.team != this.team && continueInDirection) {
-              coords.push([i, y]);
-              continueInDirection = false;
-            }
+          if (this.team == 'white') {
+            square.canBlackKingMoveHere = false;
           } else {
-            coords.push([i, y]);
+            square.canWhiteKingMoveHere = false;
           }
+          if (square.piece && square.piece != this) {
+            if (square.piece.team != currentMove) {
+              if (addMoreSquares) coords.push([i, y]);
+            }
+            if (square.piece.type != 'king') addMoreSquares = false;
+          }
+          if (addMoreSquares) coords.push([i, y]);
         }
-        // Start at the Queen going down (-Y)
-        continueInDirection = true;
+        // Start at the queen going down (-Y)
+        addMoreSquares = true;
         for (let i = x; i >= 0; i--) {
           let square = chessBoard.getSquareFromXYorVector(i, y);
-          if (square.piece) {
-            if (this.team == 'white') {
-              square.canBlackKingMoveHere = false;
-            } else {
-              square.canWhiteKingMoveHere = false;
-            }
-            if (square.piece.team != this.team && continueInDirection) {
-              coords.push([i, y]);
-              continueInDirection = false;
-            }
+          if (this.team == 'white') {
+            square.canBlackKingMoveHere = false;
           } else {
-            coords.push([i, y]);
+            square.canWhiteKingMoveHere = false;
           }
+          if (square.piece && square.piece != this) {
+            if (square.piece.team != currentMove) {
+              if (addMoreSquares) coords.push([i, y]);
+            }
+            if (square.piece.type != 'king') addMoreSquares = false;
+          }
+          if (addMoreSquares) coords.push([i, y]);
         }
 
-        // BISHOP:
-        // Can move diag in any dir until
-        // stopped by a piece or game edge
-        let continueQueenRightUp = true;
-        let continueQueenRightDown = true;
-        let continueQueenLeftUp = true;
-        let continueQueenLeftDown = true;
-        let yOffset;
-        let square;
-        for (let xOffset = 0; xOffset < chessBoard.width; xOffset++) {
-          yOffset = xOffset;
-          let newX = x + xOffset;
-          let newY = y + yOffset;
-          square = chessBoard.getSquareFromXYorVector(newX, newY);
-          if (square) {
-            if (this.team == 'white') {
-              square.canBlackKingMoveHere = false;
-            } else {
-              square.canWhiteKingMoveHere = false;
-            }
-          }
-          if (continueQueenRightDown) {
+        // Diagonal
 
-            if (square && square.piece && square.piece != this) {
-              if (square.piece.team != currentMove) coords.push([newX, newY]);
-              continueQueenRightDown = false;
+        // The way check works is:
+        // if the king is in a square that can be
+        // captured in the next turn, it is in check
+
+
+        let queenDiagonal = {
+          rightDown: true,
+          rightDownCheck: true,
+          leftDown: true,
+          leftDownCheck: true,
+          rightUp: true,
+          rightUpCheck: true,
+          leftUp: true,
+          leftUpCheck: true,
+        };
+
+        for (let offset = 0; offset < chessBoard.width; offset++) {
+          // Right Down
+          let newX = x + offset; // Right (+X)
+          let newY = y + offset; // Down  (+Y)
+          let square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (queenDiagonal.rightDown) {
+              square.debugMessage = offset;
+              if (square.piece) {
+                queenDiagonal.rightDown = false;
+                if (square.piece.type != 'king') {
+                  queenDiagonal.rightDownCheck = false;
+                }
+              }
+              coords.push([newX, newY]);
             }
-            coords.push([newX, newY]);
-          }
-          yOffset = xOffset;
-          newX = x - xOffset;
-          newY = y + yOffset;
-          square = chessBoard.getSquareFromXYorVector(newX, newY);
-          if (square) {
-            if (this.team == 'white') {
-              square.canBlackKingMoveHere = false;
-            } else {
-              square.canWhiteKingMoveHere = false;
+            if (queenDiagonal.rightDownCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
             }
-          }
-          if (continueQueenLeftDown) {
-            if (square && square.piece && square.piece != this) {
-              if (square.piece.team != currentMove) coords.push([newX, newY]);
-              continueQueenLeftDown = false;
-            }
-            coords.push([newX, newY]);
-          }
-          yOffset = xOffset;
-          newX = x + xOffset;
-          newY = y - yOffset;
-          square = chessBoard.getSquareFromXYorVector(newX, newY);
-          if (square) {
-            if (this.team == 'white') {
-              square.canBlackKingMoveHere = false;
-            } else {
-              square.canWhiteKingMoveHere = false;
-            }
-          }
-          if (continueQueenRightUp) {
-            if (square && square.piece && square.piece != this) {
-              if (square.piece.team != currentMove) coords.push([newX, newY]);
-              continueQueenRightUp = false;
-            }
-            coords.push([newX, newY]);
-          }
-          yOffset = xOffset;
-          newX = x - xOffset;
-          newY = y - yOffset;
-          square = chessBoard.getSquareFromXYorVector(newX, newY);
-          if (square) {
-            if (this.team == 'white') {
-              square.canBlackKingMoveHere = false;
-            } else {
-              square.canWhiteKingMoveHere = false;
-            }
-          }
-          if (continueQueenLeftUp) {
-            if (square && square.piece && square.piece != this) {
-              if (square.piece.team != currentMove) coords.push([newX, newY]);
-              continueQueenLeftUp = false;
-            }
-            coords.push([newX, newY]);
           }
 
+          // Left Down
+          newX = x - offset; // Left (-X)
+          newY = y + offset; // Down (+Y)
+          square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (queenDiagonal.leftDown) {
+              square.debugMessage = offset;
+              if (square.piece) {
+                queenDiagonal.leftDown = false;
+                if (square.piece.type != 'king') {
+                  queenDiagonal.leftDownCheck = false;
+                }
+              }
+              coords.push([newX, newY]);
+            }
+            if (queenDiagonal.leftDownCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
+
+          // Right Up
+          newX = x + offset; // Right (+X)
+          newY = y - offset; // Up    (-Y)
+          square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (queenDiagonal.rightUp) {
+              square.debugMessage = offset;
+              if (square.piece) {
+                queenDiagonal.rightUp = false;
+                if (square.piece.type != 'king') {
+                  queenDiagonal.rightUpCheck = false;
+                }
+              }
+              coords.push([newX, newY]);
+            }
+            if (queenDiagonal.rightUpCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
+
+          // Left Up
+          newX = x - offset; // Left (-X)
+          newY = y - offset; // Up   (-Y)
+          square = chessBoard.getSquareFromXYorVector(newX, newY);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (queenDiagonal.leftUp) {
+              square.debugMessage = offset;
+              if (square.piece) {
+                queenDiagonal.leftUp = false;
+                if (square.piece.type != 'king') {
+                  queenDiagonal.leftUpCheck = false;
+                }
+              }
+              coords.push([newX, newY]);
+            }
+            if (queenDiagonal.leftUpCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
+          }
         }
         break;
     }
