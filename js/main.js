@@ -5,11 +5,11 @@ let demo = [ // 9x9
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'rook', 'none', 'none', 'none', 'none', 'none', 'none'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'pawn', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'none', 'none', 'star', 'none', 'none', 'none', 'none'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['none', 'none', 'none', 'none', 'none', 'none', 'king', 'none', 'none'],
+  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
 ];
 

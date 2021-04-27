@@ -76,11 +76,17 @@ class Piece {
         let newY = y + direction;
         let squareToBeChecked = chessBoard.getSquareFromXYorVector(x, newY);
         if (squareToBeChecked && (!squareToBeChecked.piece || squareToBeChecked.team == currentMove)) {
-          coords.push([x, newY]);
+          coords.push({
+            x: x,
+            y: newY
+          });
           newY += direction;
           let squareToBeChecked = chessBoard.getSquareFromXYorVector(x, newY);
           if (squareToBeChecked && !squareToBeChecked.piece)
-            if (!this.hasMoved) coords.push([x, newY]);
+            if (!this.hasMoved) coords.push({
+              x: x,
+              y: newY
+            });
         }
 
 
@@ -90,13 +96,19 @@ class Piece {
         // If there is a piece there
         squareToBeChecked = chessBoard.getSquareFromXYorVector(newX, newY);
         if (squareToBeChecked && squareToBeChecked.piece)
-          coords.push([newX, newY]);
+          coords.push({
+            x: newX,
+            y: newY
+          });
 
         newX = x - 1; // look on the other side
         // If there is a piece there
         squareToBeChecked = chessBoard.getSquareFromXYorVector(newX, newY);
         if (squareToBeChecked && squareToBeChecked.piece)
-          coords.push([newX, newY]);
+          coords.push({
+            x: newX,
+            y: newY
+          });
 
         this.mightEnPassant = false;
         if (this.type == 'pawn' && ((this.startedAtTop && this.pos.y == chessBoard.height - 4) || (!this.startedAtTop && this.pos.y == 3))) {
@@ -114,7 +126,10 @@ class Piece {
             // in danger of being captured via En Passant
             squareToBeChecked.mayEnPassantTo = true;
             chessBoard.getSquareFromXYorVector(newX, y + direction).mayEnPassantTo = true;
-            coords.push([newX, y + direction]);
+            coords.push({
+              x: newX,
+              y: y + direction
+            });
             // we have to let the square know that if the move is taken, kill the residing piece
           }
           newX = x - 1; // to the left
@@ -129,7 +144,10 @@ class Piece {
             // in danger of being captured via En Passant
             squareToBeChecked.mayEnPassantTo = true;
             chessBoard.getSquareFromXYorVector(newX, y + direction).mayEnPassantTo = true;
-            coords.push([newX, y + direction]);
+            coords.push({
+              x: newX,
+              y: y + direction
+            });
             // we have to let the square know that if the move is taken, kill the residing piece
           }
 
@@ -139,55 +157,128 @@ class Piece {
       case 'rook':
         // Can move vert and hori in any dir
         // until stopped by a piece or game edge
-
+        let rookHorizontal = {
+          right: true,
+          rightCheck: true,
+          left: true,
+          leftCheck: true,
+          up: true,
+          upCheck: true,
+          down: true,
+          downCheck: true,
+        };
 
         // Start at the rook going up (-Y)
         for (let i = y; i >= 0; i--) {
           let square = chessBoard.getSquareFromXYorVector(x, i);
-          if (square.piece && square.piece != this) {
-            if (square.piece.team != currentMove) coords.push([x, i]);
-            break;
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (rookHorizontal.up) {
+              if (square.piece) {
+                rookHorizontal.up = false;
+                if (square.piece.type != 'king') {
+                  rookHorizontal.upCheck = false;
+                }
+              }
+              coords.push({
+                x: x,
+                y: i
+              });
+            }
+            if (rookHorizontal.upCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
           }
-          coords.push([x, i]);
         }
 
         // Start at the rook going down (+Y)
         for (let i = y; i < chessBoard.height; i++) {
           let square = chessBoard.getSquareFromXYorVector(x, i);
-          if (square.piece && square.piece != this) {
-            if (square.piece.team != currentMove) coords.push([x, i]);
-            break;
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (rookHorizontal.down) {
+              if (square.piece) {
+                rookHorizontal.down = false;
+                if (square.piece.type != 'king') {
+                  rookHorizontal.downCheck = false;
+                }
+              }
+              coords.push({
+                x: x,
+                y: i
+              });
+            }
+            if (rookHorizontal.downCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
           }
-          coords.push([x, i]);
         }
 
 
         // Start at the rook going right (+X)
         for (let i = x; i < chessBoard.width; i++) {
           let square = chessBoard.getSquareFromXYorVector(i, y);
-          if (square.piece && square.piece != this) {
-            if (square.piece.team != currentMove) coords.push([i, y]);
-            break;
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (rookHorizontal.right) {
+              if (square.piece) {
+                rookHorizontal.right = false;
+                if (square.piece.type != 'king') {
+                  rookHorizontal.rightCheck = false;
+                }
+              }
+              coords.push({
+                x: i,
+                y: y
+              });
+            }
+            if (rookHorizontal.rightCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
           }
-          coords.push([i, y]);
         }
 
 
-        // Start at the rook going down (-Y)
+        // Start at the rook going left (-Y)
         for (let i = x; i >= 0; i--) {
           let square = chessBoard.getSquareFromXYorVector(i, y);
-          if (square.piece && square.piece != this) {
-            if (square.piece.team != currentMove) coords.push([i, y]);
-            break;
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (rookHorizontal.up) {
+              if (square.piece) {
+                rookHorizontal.up = false;
+                if (square.piece.type != 'king') {
+                  rookHorizontal.upCheck = false;
+                }
+              }
+              coords.push({
+                x: i,
+                y: y
+              });
+            }
+            if (rookHorizontal.upCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
           }
-          coords.push([i, y]);
         }
 
         break;
       case 'knight':
         // either 2 Horizontal and 1 Vertical
         // or     1 Horizontal and 2 Vertical
-        let possibilities = [
+        let knightPossibilities = [
           [1, 2],
           [2, 1],
           [2, -1],
@@ -208,7 +299,10 @@ class Piece {
               square.canWhiteKingMoveHere = false;
             }
           }
-          coords.push([newX, newY]);
+          coords.push({
+            x: newX,
+            y: newY
+          });
         }
         break;
       case 'bishop':
@@ -239,7 +333,10 @@ class Piece {
                   bishopDiagonal.rightDownCheck = false;
                 }
               }
-              coords.push([newX, newY]);
+              coords.push({
+                x: newX,
+                y: newY
+              });
             }
             if (bishopDiagonal.rightDownCheck) {
               if (this.team == 'white') {
@@ -263,7 +360,10 @@ class Piece {
                   bishopDiagonal.leftDownCheck = false;
                 }
               }
-              coords.push([newX, newY]);
+              coords.push({
+                x: newX,
+                y: newY
+              });
             }
             if (bishopDiagonal.leftDownCheck) {
               if (this.team == 'white') {
@@ -287,7 +387,10 @@ class Piece {
                   bishopDiagonal.rightUpCheck = false;
                 }
               }
-              coords.push([newX, newY]);
+              coords.push({
+                x: newX,
+                y: newY
+              });
             }
             if (bishopDiagonal.rightUpCheck) {
               if (this.team == 'white') {
@@ -311,7 +414,10 @@ class Piece {
                   bishopDiagonal.leftUpCheck = false;
                 }
               }
-              coords.push([newX, newY]);
+              coords.push({
+                x: newX,
+                y: newY
+              });
             }
             if (bishopDiagonal.leftUpCheck) {
               if (this.team == 'white') {
@@ -336,7 +442,10 @@ class Piece {
                 continue;
               }
             }
-            coords.push([newX, newY]);
+            coords.push({
+              x: newX,
+              y: newY
+            });
           }
         }
         // Can move 1 sq in any direction
@@ -346,72 +455,121 @@ class Piece {
         // Can move vert and hori in any dir
         // until stopped by a piece or game edge
         // Start at the queen going up (-Y)
-        let addMoreSquares = true;
+        let queenHorizontal = {
+          right: true,
+          rightCheck: true,
+          left: true,
+          leftCheck: true,
+          up: true,
+          upCheck: true,
+          down: true,
+          downCheck: true,
+        };
+
+        // Start at the queen going up (-Y)
         for (let i = y; i >= 0; i--) {
           let square = chessBoard.getSquareFromXYorVector(x, i);
-          if (this.team == 'white') {
-            square.canBlackKingMoveHere = false;
-          } else {
-            square.canWhiteKingMoveHere = false;
-          }
-          if (square.piece && square.piece != this) {
-            if (square.piece.team != currentMove) {
-              if (addMoreSquares) coords.push([x, i]);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (queenHorizontal.up) {
+              if (square.piece) {
+                queenHorizontal.up = false;
+                if (square.piece.type != 'king') {
+                  queenHorizontal.upCheck = false;
+                }
+              }
+              coords.push({
+                x: x,
+                y: i
+              });
             }
-            if (square.piece.type != 'king') addMoreSquares = false;
+            if (queenHorizontal.upCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
           }
-          if (addMoreSquares) coords.push([x, i]);
         }
+
         // Start at the queen going down (+Y)
-        addMoreSquares = true;
         for (let i = y; i < chessBoard.height; i++) {
           let square = chessBoard.getSquareFromXYorVector(x, i);
-          if (this.team == 'white') {
-            square.canBlackKingMoveHere = false;
-          } else {
-            square.canWhiteKingMoveHere = false;
-          }
-          if (square.piece && square.piece != this) {
-            if (square.piece.team != currentMove) {
-              if (addMoreSquares) coords.push([x, i]);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (queenHorizontal.down) {
+              if (square.piece) {
+                queenHorizontal.down = false;
+                if (square.piece.type != 'king') {
+                  queenHorizontal.downCheck = false;
+                }
+              }
+              coords.push({
+                x: x,
+                y: i
+              });
             }
-            if (square.piece.type != 'king') addMoreSquares = false;
+            if (queenHorizontal.downCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
           }
-          if (addMoreSquares) coords.push([x, i]);
         }
+
+
         // Start at the queen going right (+X)
-        addMoreSquares = true;
         for (let i = x; i < chessBoard.width; i++) {
           let square = chessBoard.getSquareFromXYorVector(i, y);
-          if (this.team == 'white') {
-            square.canBlackKingMoveHere = false;
-          } else {
-            square.canWhiteKingMoveHere = false;
-          }
-          if (square.piece && square.piece != this) {
-            if (square.piece.team != currentMove) {
-              if (addMoreSquares) coords.push([i, y]);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (queenHorizontal.right) {
+              if (square.piece) {
+                queenHorizontal.right = false;
+                if (square.piece.type != 'king') {
+                  queenHorizontal.rightCheck = false;
+                }
+              }
+              coords.push({
+                x: i,
+                y: y
+              });
             }
-            if (square.piece.type != 'king') addMoreSquares = false;
+            if (queenHorizontal.rightCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
           }
-          if (addMoreSquares) coords.push([i, y]);
         }
-        // Start at the queen going down (-Y)
-        addMoreSquares = true;
+
+
+        // Start at the queen going left (-Y)
         for (let i = x; i >= 0; i--) {
           let square = chessBoard.getSquareFromXYorVector(i, y);
-          if (this.team == 'white') {
-            square.canBlackKingMoveHere = false;
-          } else {
-            square.canWhiteKingMoveHere = false;
-          }
-          if (square.piece && square.piece != this) {
-            if (square.piece.team != currentMove) {
-              if (addMoreSquares) coords.push([i, y]);
+          if (square && square != this.square) { // don't stop counting just because *we* are a piece in our path
+            if (queenHorizontal.up) {
+              if (square.piece) {
+                queenHorizontal.up = false;
+                if (square.piece.type != 'king') {
+                  queenHorizontal.upCheck = false;
+                }
+              }
+              coords.push({
+                x: i,
+                y: y
+              });
             }
-            if (square.piece.type != 'king') addMoreSquares = false;
+            if (queenHorizontal.upCheck) {
+              if (this.team == 'white') {
+                square.canBlackKingMoveHere = false;
+              } else {
+                square.canWhiteKingMoveHere = false;
+              }
+            }
           }
-          if (addMoreSquares) coords.push([i, y]);
         }
 
         // Diagonal
@@ -446,7 +604,10 @@ class Piece {
                   queenDiagonal.rightDownCheck = false;
                 }
               }
-              coords.push([newX, newY]);
+              coords.push({
+                x: newX,
+                y: newY
+              });
             }
             if (queenDiagonal.rightDownCheck) {
               if (this.team == 'white') {
@@ -470,7 +631,10 @@ class Piece {
                   queenDiagonal.leftDownCheck = false;
                 }
               }
-              coords.push([newX, newY]);
+              coords.push({
+                x: newX,
+                y: newY
+              });
             }
             if (queenDiagonal.leftDownCheck) {
               if (this.team == 'white') {
@@ -494,7 +658,10 @@ class Piece {
                   queenDiagonal.rightUpCheck = false;
                 }
               }
-              coords.push([newX, newY]);
+              coords.push({
+                x: newX,
+                y: newY
+              });
             }
             if (queenDiagonal.rightUpCheck) {
               if (this.team == 'white') {
@@ -518,7 +685,10 @@ class Piece {
                   queenDiagonal.leftUpCheck = false;
                 }
               }
-              coords.push([newX, newY]);
+              coords.push({
+                x: newX,
+                y: newY
+              });
             }
             if (queenDiagonal.leftUpCheck) {
               if (this.team == 'white') {
@@ -807,8 +977,8 @@ class Piece {
     }
     let squares = [];
     for (let pair of coords) {
-      x = pair[0];
-      y = pair[1];
+      x = pair.x;
+      y = pair.y;
       // This is where to check if it goes off the board or
       // into another piece.
       if (x < 0 || y < 0 || x >= chessBoard.width || y >= chessBoard.height) continue;
