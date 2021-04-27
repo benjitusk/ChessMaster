@@ -57,6 +57,8 @@ class ChessBoard {
       square.piecesCausingCheck = [];
       square.canBlackKingMoveHere = true;
       square.canWhiteKingMoveHere = true;
+      square.debugMessage = '';
+      square.color = square.defaultColor;
       // Turn off the highlighting of all squares
       square.highlight = false;
       // square.mayEnPassantTo = false;
