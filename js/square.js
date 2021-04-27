@@ -50,8 +50,8 @@ class Square {
       rect(this.pos.x * this.size, this.pos.y * this.size, this.size);
     }
     if (this.mayEnPassantTo) {
-      fill(color(255, 0, 0, 50));
-      rect(this.pos.x * this.size, this.pos.y * this.size, this.size);
+      // fill(color(255, 0, 0, 50));
+      // rect(this.pos.x * this.size, this.pos.y * this.size, this.size);
 
     }
     if (this.highlight && config.showPossibleMoves) {
