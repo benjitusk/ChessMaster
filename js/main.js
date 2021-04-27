@@ -2,15 +2,15 @@
 let currentMove = "white";
 let chessBoard;
 let demo = [ // 9x9
-  ['rook', 'knight', 'bishop', 'queen', 'king', 'queen', 'bishop', 'knight', 'rook'],
-  ['pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'rook', 'none', 'none', 'none', 'none', 'none', 'none'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
+  ['none', 'none', 'none', 'none', 'pawn', 'none', 'none', 'none', 'none'],
   ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
-  ['pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn'],
-  ['rook', 'knight', 'bishop', 'queen', 'king', 'queen', 'bishop', 'knight', 'rook'],
+  ['none', 'none', 'none', 'none', 'none', 'none', 'king', 'none', 'none'],
+  ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none'],
 ];
 
 let standardSetup = [
@@ -25,26 +25,38 @@ let standardSetup = [
 ];
 
 let config = {
-  pieceSetup: standardSetup,
+  pieceSetup: demo,
   showPossibleMoves: true,
   highlightPotentialKills: true,
   showCoordinates: true,
   enforceTurns: true,
   showAllSquaresInCheck: true,
-  renderPieces: false,
+  renderPieces: true,
+  friendlyFire: true,
+  doStroke: true,
+  debug: true,
 };
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   chessBoard = new ChessBoard(config.pieceSetup);
-  noStroke();
   textSize(chessBoard.size / 6.3);
   textAlign(CENTER, CENTER);
   chessBoard.updateSquares();
 }
 
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
 function draw() {
   background(204);
+  if (config.doStroke) {
+    stroke(0);
+    strokeWeight(0.5);
+  } else {
+    noStroke();
+  }
   chessBoard.renderBoard();
   if (chessBoard.winner) {
     chessBoard.renderBoard();
