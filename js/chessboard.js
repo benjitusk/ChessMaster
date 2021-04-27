@@ -46,7 +46,9 @@ class ChessBoard {
     for (let square of this.squares) {
       square.render();
     }
-    this.renderPieces();
+    for (let piece of this.pieces) {
+      piece.render();
+    }
   }
 
   updateSquares() {
@@ -59,6 +61,7 @@ class ChessBoard {
       square.canWhiteKingMoveHere = true;
       square.debugMessage = '';
       square.color = square.defaultColor;
+      square.specialEnPassantHighlight = false;
       // Turn off the highlighting of all squares
       square.highlight = false;
       // square.mayEnPassantTo = false;
@@ -99,12 +102,6 @@ class ChessBoard {
     }
   }
 
-
-  renderPieces() {
-    for (let piece of this.pieces) {
-      piece.render();
-    }
-  }
 
   getSelectedPiece() {
     for (let piece of this.pieces) {

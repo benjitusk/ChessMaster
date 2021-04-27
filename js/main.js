@@ -25,16 +25,16 @@ let standardSetup = [
 ];
 
 let config = {
-  pieceSetup: demo,
+  pieceSetup: standardSetup,
   showPossibleMoves: true,
   highlightPotentialKills: true,
-  showCoordinates: true,
+  showCoordinates: false,
   enforceTurns: true,
-  showAllSquaresInCheck: true,
+  showAllSquaresInCheck: false,
   renderPieces: true,
-  friendlyFire: true,
+  friendlyFire: false,
   doStroke: true,
-  debug: true,
+  debug: false,
 };
 
 function setup() {
