@@ -2,7 +2,8 @@ class ChessBoard {
   constructor(defaultPieces) {
     this.height = defaultPieces.length;
     this.width = defaultPieces[0].length;
-    this.size = floor(windowHeight / this.height);
+    let smallerDimention = (windowHeight < windowWidth) ? windowHeight : windowWidth;
+    this.size = floor(smallerDimention / this.height);
     this.pieces = [];
     this.squares = [];
     this.winner = undefined;
