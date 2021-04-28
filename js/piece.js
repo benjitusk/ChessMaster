@@ -457,13 +457,28 @@ class Piece {
         if (this.hasMoved) break;
         // check the corner squares in our row.
         // they must both contain rooks that have not yet moved
+        let eligibleToCastle = {
+          kingSide: true,
+          queenSide: true,
+        };
         // Queen side castle
         let square = chessBoard.getSquareFromXYorVector(0, y);
-        if (!(square.piece && square.piece.type == 'rook' && !square.piece.hasMoved)) break;
-        // Check between our position and the queenside rook, make sure each sq
+        if (!(square.piece && square.piece.type == 'rook' && !square.piece.hasMoved)) eligibleToCastle.queenSide = false;
+        if (eligibleToCastle.queenSide) {
+          for (let i = 1; i < x; i++) {
+            let queenSideSquare = chessBoard.getSquareFromXYorVector(i, y);
+            if (queenSideSquare.piece) eligibleToCastle.queenSide = false;
+          }
+        }
         // King side castle
         square = chessBoard.getSquareFromXYorVector(chessBoard.width - 1, y);
-        if (!(square.piece && square.piece.type == 'rook' && !square.piece.hasMoved)) break;
+        if (!(square.piece && square.piece.type == 'rook' && !square.piece.hasMoved)) eligibleToCastle.kingSide = false;
+        if (eligibleToCastle.kingSide) {
+          for (let i = x + 1; i < chessBoard.width - 1; i++) {
+            let kingSideSquare = chessBoard.getSquareFromXYorVector(i, y);
+            if (kingSideSquare.piece) eligibleToCastle.kingSide = false;
+          }
+        }
 
         break;
       case 'queen':
