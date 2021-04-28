@@ -35,7 +35,7 @@ class Piece {
 
   }
 
-  move(destination) {
+  move(destination, switchMove = true) {
     if (destination.equals(this.pos)) {
       chessBoard.updateSquares();
       return;
@@ -53,8 +53,10 @@ class Piece {
       let passedPawn = passedSquare.piece;
       passedPawn.live = false;
     }
-    chessBoard.updateSquares();
-    chessBoard.switchCurrentMove();
+    if (switchMove) {
+      chessBoard.updateSquares();
+      chessBoard.switchCurrentMove();
+    }
 
   }
 

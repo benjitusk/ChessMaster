@@ -7,6 +7,7 @@ class ChessBoard {
     this.pieces = [];
     this.squares = [];
     this.winner = undefined;
+    this.turnCount = 0;
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
         let pos = createVector(j, i);
@@ -39,6 +40,7 @@ class ChessBoard {
   }
 
   switchCurrentMove() {
+    this.turnCount++;
     currentMove = (currentMove == 'white') ? 'black' : 'white';
   }
 
