@@ -5,8 +5,30 @@ class Piece {
     this.live = true;
     this.selected = false;
     this.pos = pos; // p5 Vector
-    this.imageLocation = 'imgs/' + this.team + '_' + this.type + '.png';
-    this.icon = loadImage(this.imageLocation);
+    switch (this.type) {
+      case 'pawn':
+        this.icon = (this.team == 'white') ? pieceImages.white.pawn : pieceImages.black.pawn;
+        break;
+      case 'rook':
+        this.icon = (this.team == 'white') ? pieceImages.white.rook : pieceImages.black.rook;
+        break;
+      case 'knight':
+        this.icon = (this.team == 'white') ? pieceImages.white.knight : pieceImages.black.knight;
+        break;
+      case 'bishop':
+        this.icon = (this.team == 'white') ? pieceImages.white.bishop : pieceImages.black.bishop;
+        break;
+      case 'queen':
+        this.icon = (this.team == 'white') ? pieceImages.white.queen : pieceImages.black.queen;
+        break;
+      case 'king':
+        this.icon = (this.team == 'white') ? pieceImages.white.king : pieceImages.black.king;
+        break;
+      case 'star':
+        this.icon = (this.team == 'white') ? pieceImages.white.star : pieceImages.black.star;
+        break;
+    }
+    // this.icon = loadImage(this.imageLocation);
     this.size = size;
     this.hasMoved = false;
     this.startedAtTop = (this.pos.y < 4);

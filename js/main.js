@@ -23,6 +23,7 @@ let standardSetup = [
   ['pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn'],
   ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook']
 ];
+let pieceImages;
 
 let config = {
   pieceSetup: standardSetup,
@@ -36,6 +37,29 @@ let config = {
   doStroke: true,
   debug: false,
 };
+
+function preload() {
+  pieceImages = {
+    white: {
+      pawn: loadImage('imgs/white_pawn.png'),
+      rook: loadImage('imgs/white_rook.png'),
+      knight: loadImage('imgs/white_knight.png'),
+      bishop: loadImage('imgs/white_bishop.png'),
+      queen: loadImage('imgs/white_queen.png'),
+      king: loadImage('imgs/white_king.png'),
+      star: loadImage('imgs/white_star.png'),
+    },
+    black: {
+      pawn: loadImage('imgs/black_pawn.png'),
+      rook: loadImage('imgs/black_rook.png'),
+      knight: loadImage('imgs/black_knight.png'),
+      bishop: loadImage('imgs/black_bishop.png'),
+      queen: loadImage('imgs/black_queen.png'),
+      king: loadImage('imgs/black_king.png'),
+      star: loadImage('imgs/black_star.png'),
+    },
+  };
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
