@@ -112,6 +112,7 @@ class ChessBoard {
 
   getSquareUnderMouse() {
     for (let square of this.squares) {
+      square.updateMouseOver();
       if (square.mouseOver) {
         return square;
       }
@@ -138,7 +139,6 @@ class ChessBoard {
   }
 
   mouseClicked() {
-
     // If there are highlighted squares,
     // it means that there is a selected piece
 

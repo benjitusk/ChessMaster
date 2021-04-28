@@ -22,9 +22,7 @@ class Square {
     this.color = this.defaultColor;
   }
 
-  render() {
-    // make an if statement that checks if the mouse is within the bounds of the square.
-    // If it's true, tint the box or something
+  updateMouseOver() {
     if (mouseX > this.pos.x * this.size &&
       mouseX < (this.pos.x + 1) * this.size &&
       mouseY > this.pos.y * this.size &&
@@ -33,6 +31,12 @@ class Square {
     } else {
       this.mouseOver = false;
     }
+  }
+
+  render() {
+    // make an if statement that checks if the mouse is within the bounds of the square.
+    // If it's true, tint the box or something
+    // this.debugMessage = `(${this.pos.x * this.size}, ${this.pos.y * this.size})`;
     let fillColor;
     switch (this.color) {
       case 'light':
