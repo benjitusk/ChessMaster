@@ -128,7 +128,7 @@ class ChessBoard {
    * @param {Number} y
    * @return {Square | undefined}
    */
-  getSquareFromXYorVector(x, y) {
+  getSquareFromXY(x, y) {
     if (typeof x != "number") {
       for (let square of this.squares) {
         if (square.pos.equals(x)) return square;
